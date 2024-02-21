@@ -14,9 +14,12 @@ const verifyToken = (req,res,next) => {
     }
 };
 
-const verifyTokenAndAuthorization = (req,res,next) => {
-    verifyToken(req,res,()=>{
-        if(req.user.id === req.params.id || req.user.isAdmin){
+const verifyTokenAndAuthorization = (req, res, next) => {
+    verifyToken(req, res, () => {
+        console.log("User ID in token:", req.user.id);
+        console.log("User ID in request parameters:", req.params.userId);
+        console.log("Is admin:", req.user.isAdmin);
+        if(req.user.id === req.body.userId || req.user.isAdmin){
             next()
         }else{
             res.status(403).json("you are not allowed to do that");
@@ -24,12 +27,13 @@ const verifyTokenAndAuthorization = (req,res,next) => {
     })
 }
 
+
 const verifyTokenAndAdmin = (req,res,next) => {
     verifyToken(req,res,()=>{
         if(req.user.isAdmin){
             next()
         }else{
-            res.status(403).json("you are not allowed to do that");
+            res.status(403).json("you are not allowed to do that not admin");
         }
     })
 }
